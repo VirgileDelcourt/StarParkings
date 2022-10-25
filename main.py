@@ -1,16 +1,31 @@
-# This is a sample Python script.
+from flask import Flask, request, render_template
+import requests
 
-# Press Maj+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+app = Flask(__name__)
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+@app.route('/')
+def home():
+    return render_template("home.html", message="Indiquez l'ID du parking à vérifier.")
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+@app.route("/", methods=["POST"])
+def places():
+    reponse = requests.get(
+        "https://data.explore.star.fr/api/records/1.0/search/?dataset=tco-parcsrelais-star-etat-tr&q=&facet=idparc&facet=nom&facet=etatouverture&facet=etatremplissage")
+    data = reponse.json()
+    records = data["records"]
+
+    if int(request.form["text"]) - 1 > len(records):
+        return render_template("home.html", message="Vous avez entré un ID inconnu, réessayez.")
+
+    parkings = records[int(request.form["text"]) - 1]
+    parking = parkings["fields"]
+    if not parking['etatouverture'] == 'OUVERT':
+        return render_template("home.html", message="Le parking " + str(parking['nom']) + "n'est pas ouvert.")
+    return render_template("home.html", message="Il reste " + str(parking['nbplacessolistesdispo']) +
+                                                " places disponibles au parking " + str(parking['nom']) + " !")
+
+
+if __name__ == "__main__":
+    app.run()
