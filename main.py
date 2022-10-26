@@ -15,7 +15,8 @@ def places():
         "https://data.explore.star.fr/api/records/1.0/search/?dataset=tco-parcsrelais-star-etat-tr&q=&facet=idparc&facet=nom&facet=etatouverture&facet=etatremplissage")
     data = reponse.json()
     records = data["records"]
-
+    if request.form["text"] == "":
+        return render_template("index.html", message="Vous avez entré un ID inconnu, réessayez.")
     if int(request.form["text"]) - 1 > len(records):
         return render_template("index.html", message="Vous avez entré un ID inconnu, réessayez.")
 
