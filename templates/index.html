@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
+      <script src="static/refresh.js" defer></script>
       <title>Visualisateur de parking</title>
 			<link rel ="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
             <link rel ="icon" type="image/png" href="{{ url_for('static', filename='img/Logo_STAR.png') }}">
@@ -10,8 +11,15 @@
     <h1 class={{ classe }}>{{ message }}</h1>
     <form action="." method="POST">
         <img src="{{ url_for('static', filename='img/Logo_STAR.png') }}" alt="Image non trouvée">
-        <input type="number" name="text" placeholder="Entrez l'ID du parking ici" max="8" min="1">
+        <input type="number" name="text" placeholder="Entrez l'ID du parking ici"  min="1">
         <button type="submit">OK</button>
     </form>
+    {% if info_parking is defined %}
+    <span id="id_parking" style="display: none">{{id_parking}}</span>
+    <b>Nombre de places disponibles à
+        <span id="nomParking">{{info_parking['nom']}}</span> :
+        <span id="placesDispo">{{info_parking['nbplacessolistesdispo']}}</span>
+    </b>
+    {% endif %}
 </body>
 </html>
