@@ -1,0 +1,37 @@
+h1 {
+  font-size: 2em;
+  color: #f42069;
+  text-align: left;
+} 
+
+input {
+  width: 300px;
+  height: 20px;
+}
+
+button {
+  height: 20px;
+}
+
+.alert {
+    color: red;
+    animation: blinker 0.75s infinite;
+}
+
+@keyframes blinker {
+    from { opacity: 0.9; }
+    50% { opacity: 0.2; }
+    to { opacity: 0.7; }
+}
+
+img {
+    width: 30px
+}
+
+form{
+    display:flex;
+    align-items:center;
+    gap: 4px;
+    min-width: 30vw;
+    max-width: 60vw;
+}

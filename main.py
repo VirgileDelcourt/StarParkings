@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template
 import requests
 
-app = Flask(__name__, template_folder='www')
+app = Flask(__name__, template_folder='templates')
 
 
 @app.route('/')
@@ -23,6 +23,10 @@ def places():
     parking = parkings["fields"]
     if not parking['etatouverture'] == 'OUVERT':
         return render_template("index.html", message="Le parking " + str(parking['nom']) + "n'est pas ouvert.")
+    if parking['nbplacessolistesdispo'] <= 20:
+        return render_template("index.html", message="Il reste " + str(parking['nbplacessolistesdispo']) +
+                                                     " places disponibles au parking " + str(parking['nom']) + " !",
+                               classe="alert")
     return render_template("index.html", message="Il reste " + str(parking['nbplacessolistesdispo']) +
                                                  " places disponibles au parking " + str(parking['nom']) + " !")
 
